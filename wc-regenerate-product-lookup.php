@@ -11,7 +11,7 @@
  * Plugin Name:       Regenerate product lookup table for WooCommerce
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Suman Bhattarai
@@ -114,3 +114,19 @@ function smnwcrpl_product_lookup_table_cron_deactivate() {
 	$timestamp = wp_next_scheduled( 'smnwcrpl_regenerate_product_lookup_table' );
 	wp_unschedule_event( $timestamp, 'smnwcrpl_regenerate_product_lookup_table' );
 }
+
+/**
+ * Add admin notice if Woocommerce is not active
+ */
+function smnwcrpl_admin_notices() {
+	$pluginList = get_option( 'active_plugins' );
+	$woo_plugin = 'woocommerce/woocommerce.php';
+
+	if ( ! in_array( $woo_plugin, $pluginList ) ) {
+		echo '<div class="notice notice-warning is-dismissible">
+		             <p><strong>Regenerate product lookup table for WooCommerce</strong> only works with store created using <a target="_blank" href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>.</p>
+		         </div>';
+	}
+}
+
+add_filter('admin_notices','smnwcrpl_admin_notices');

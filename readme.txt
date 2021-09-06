@@ -3,9 +3,9 @@ Contributors: metalfreek
 Donate link: http://sumanbhattarai.com.np/
 Tags: woo, woo commerce
 Requires at least: 5.3
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,3 +38,10 @@ By default plugin adds cron twice a day. If its not working for you change the d
 
 = 1.0.0 =
 * First Release date: January 31, 2021
+
+= 1.0.1 =
+* Minor fixes
+
+= 1.0.2 =
+* Tested with WordPress 5.8
+* Made plugin translation ready

@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 function smnwcrpl_callback_validate_options( $input ) {
 
 	$select_options = [
-		'hourly'     => 'Hourly',
-		'twicedaily' => 'Twice Daily',
-		'daily'      => 'Daily',
-		'weekly'     => 'Weekly',
+		'hourly'     => __( 'Hourly', 'smnwcrpl' ),
+		'twicedaily' => __( 'Twice Daily', 'smnwcrpl' ),
+		'daily'      => __( 'Daily', 'smnwcrpl' ),
+		'weekly'     => __( 'Weekly', 'smnwcrpl' ),
 	];
 
 	if ( ! isset( $input['cron_schedule_time'] ) ) {
