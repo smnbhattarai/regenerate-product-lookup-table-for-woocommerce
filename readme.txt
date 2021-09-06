@@ -14,8 +14,7 @@ not working as expected.
 
 == Description ==
 
-If you are using Woocommerce for you store and having trouble with sorting function in products page of Woocommerce, this plugin might help. This sort issue
-is seen especially when there is automated script pulling in products to the store. This plugin adds cron to regenerate product lookup table which Woocommerce users to quickly sort your products.
+If you are using Woocommerce for you store and having trouble with sorting function in products page of Woocommerce, this plugin might help. This sort issue is seen especially when there is automated script pulling in products to the store or when using external price sync tool. This plugin adds cron to regenerate product lookup table which Woocommerce users to quickly sort your products.
 
 == Installation ==
 
