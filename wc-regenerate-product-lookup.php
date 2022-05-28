@@ -11,7 +11,7 @@
  * Plugin Name:       Regenerate product lookup table for WooCommerce
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Suman Bhattarai
@@ -129,4 +129,40 @@ function smnwcrpl_admin_notices() {
 	}
 }
 
-add_filter('admin_notices','smnwcrpl_admin_notices');
+add_filter( 'admin_notices', 'smnwcrpl_admin_notices' );
+
+/**
+ * Add settings link to plugin actions
+ *
+ * @param  array  $plugin_actions
+ * @param  string  $plugin_file
+ */
+function smnwcrpl_add_plugin_link( $plugin_actions, $plugin_file ) {
+
+	$new_actions = array();
+
+	if ( basename( plugin_dir_path( __FILE__ ) ) . '/wc-regenerate-product-lookup.php' === $plugin_file ) {
+		$new_actions['cl_settings'] = sprintf( __( '<a href="%s">Settings</a>', 'smnwcrpl' ),
+			esc_url( admin_url( 'options-general.php?page=smnwcrpl' ) ) );
+	}
+
+	return array_merge( $new_actions, $plugin_actions );
+}
+
+add_filter( 'plugin_action_links', 'smnwcrpl_add_plugin_link', 10, 2 );
+
+function filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
+	if ( 'regenerate-product-lookup-table-for-woocommerce/wc-regenerate-product-lookup.php' !== $plugin_file ) {
+		return $plugin_meta;
+	}
+
+	$plugin_meta[] = sprintf(
+		'<a href="%1$s"><span class="dashicons dashicons-star-filled" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
+		'https://www.buymeacoffee.com/smnbhattarai/',
+		esc_html_x( 'Donate', 'verb', 'smnwcrpl' )
+	);
+
+	return $plugin_meta;
+}
+
+add_filter( 'plugin_row_meta', 'filter_plugin_row_meta', 10, 4 );

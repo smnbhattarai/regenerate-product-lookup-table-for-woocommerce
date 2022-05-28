@@ -10,7 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register admin section
  */
 function smnwcrpl_callback_section_admin() {
-	echo '<p>' . esc_html__( 'These settings enables you to customize Cron settings and change cron frequency.', 'smnwcrpl' ) . '</p>';
+	echo '<p>' . esc_html__( 'These settings enables you to customize Cron settings and change cron frequency.',
+			'smnwcrpl' ) . '</p>';
 }
 
 

@@ -1,11 +1,11 @@
 === Regenerate product lookup table for WooCommerce ===
 Contributors: metalfreek
-Donate link: http://sumanbhattarai.com.np/
+Donate link: https://www.buymeacoffee.com/smnbhattarai/
 Tags: woo, woo commerce
 Requires at least: 5.3
-Tested up to: 5.8
+Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,7 @@ If you are using Woocommerce for you store and having trouble with sorting funct
 
 = What is the default cron run duration =
 
-By default plugin adds cron twice a day. If its not working for you change the duration to lower time (possibly once an hour).
+By default, plugin adds cron twice a day. If it's not working for you change the duration to lower time (possibly once an hour).
 
 == Screenshots ==
 
@@ -35,10 +35,14 @@ By default plugin adds cron twice a day. If its not working for you change the d
 
 == Changelog ==
 
-= 1.0.0 =
-* First Release date: January 31, 2021
+= 1.0.2 =
+* Compatibility check
+* Donate link added
 
 = 1.0.1 =
 * Minor fixes
 * Tested with WordPress 5.8
 * Made plugin translation ready
+
+= 1.0.0 =
+* First Release date: January 31, 2021
