@@ -11,9 +11,9 @@
  * Plugin Name:       Regenerate product lookup table for WooCommerce
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
- * Version:           1.0.2
- * Requires at least: 5.2
- * Requires PHP:      7.2
+ * Version:           1.0.3
+ * Requires at least: 5.3
+ * Requires PHP:      7.4
  * Author:            Suman Bhattarai
  * Author URI:        http://sumanbhattarai.com.np
  * Text Domain:       smnwcrpl
