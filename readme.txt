@@ -3,9 +3,9 @@ Contributors: metalfreek
 Donate link: https://www.buymeacoffee.com/smnbhattarai/
 Tags: woo, woo commerce
 Requires at least: 5.3
-Tested up to: 6.3
+Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -34,6 +34,9 @@ By default, plugin adds cron twice a day. If it's not working for you change the
 1. Regenerate product lookup table for WooCommerce plugin option
 
 == Changelog ==
+
+= 1.0.4 =
+* Compatibility check for WordPress and Woocommerce
 
 = 1.0.3 =
 * Compatibility check for WordPress and Woocommerce
