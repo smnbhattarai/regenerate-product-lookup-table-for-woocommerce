@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function smnwcrpl_add_sublevel_menu() {
 	add_submenu_page(
 		'options-general.php',
-		__( 'Woocommerce regenerate product lookup table', 'smnwcrpl' ),
-		__( 'Woocommerce regenerate product lookup table', 'smnwcrpl' ),
+		__( 'Woocommerce regenerate product lookup table', 'regenerate-product-lookup-table-for-woocommerce' ),
+		__( 'Woocommerce regenerate product lookup table', 'regenerate-product-lookup-table-for-woocommerce' ),
 		'manage_options',
 		'smnwcrpl',
 		'smnwcrpl_display_settings_page'

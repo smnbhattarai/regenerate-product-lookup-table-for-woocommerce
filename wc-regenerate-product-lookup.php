@@ -11,14 +11,15 @@
  * Plugin Name:       Regenerate product lookup table for WooCommerce
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
- * Version:           1.0.4
+ * Version:           1.0.5
  * Requires at least: 5.3
  * Requires PHP:      7.4
+ * Requires Plugins:  woocommerce
  * Author:            Suman Bhattarai
  * Author URI:        http://sumanbhattarai.com.np
- * Text Domain:       smnwcrpl
+ * Text Domain:       regenerate-product-lookup-table-for-woocommerce
  * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 
@@ -26,16 +27,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-
-/**
- * Load text domain
- */
-function smnwcrpl_load_textdomain() {
-	load_plugin_textdomain( 'smnwcrpl', false, plugin_dir_path( __FILE__ ) . 'languages/' );
-}
-
-add_action( 'plugins_loaded', 'smnwcrpl_load_textdomain' );
 
 
 /**
@@ -134,15 +125,16 @@ add_filter( 'admin_notices', 'smnwcrpl_admin_notices' );
 /**
  * Add settings link to plugin actions
  *
- * @param  array  $plugin_actions
- * @param  string  $plugin_file
+ * @param array $plugin_actions
+ * @param string $plugin_file
  */
 function smnwcrpl_add_plugin_link( $plugin_actions, $plugin_file ) {
 
 	$new_actions = array();
 
 	if ( basename( plugin_dir_path( __FILE__ ) ) . '/wc-regenerate-product-lookup.php' === $plugin_file ) {
-		$new_actions['cl_settings'] = sprintf( __( '<a href="%s">Settings</a>', 'smnwcrpl' ),
+		/* translators: %s: Plugin's admin URL */
+		$new_actions['cl_settings'] = sprintf( __( '<a href="%s">Settings</a>', 'regenerate-product-lookup-table-for-woocommerce' ),
 			esc_url( admin_url( 'options-general.php?page=smnwcrpl' ) ) );
 	}
 
@@ -151,7 +143,7 @@ function smnwcrpl_add_plugin_link( $plugin_actions, $plugin_file ) {
 
 add_filter( 'plugin_action_links', 'smnwcrpl_add_plugin_link', 10, 2 );
 
-function filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
+function smnwcrpl_filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
 	if ( 'regenerate-product-lookup-table-for-woocommerce/wc-regenerate-product-lookup.php' !== $plugin_file ) {
 		return $plugin_meta;
 	}
@@ -159,10 +151,10 @@ function filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
 	$plugin_meta[] = sprintf(
 		'<a href="%1$s"><span class="dashicons dashicons-star-filled" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
 		'https://www.buymeacoffee.com/smnbhattarai/',
-		esc_html_x( 'Donate', 'verb', 'smnwcrpl' )
+		esc_html_x( 'Donate', 'verb', 'regenerate-product-lookup-table-for-woocommerce' )
 	);
 
 	return $plugin_meta;
 }
 
-add_filter( 'plugin_row_meta', 'filter_plugin_row_meta', 10, 4 );
+add_filter( 'plugin_row_meta', 'smnwcrpl_filter_plugin_row_meta', 10, 4 );

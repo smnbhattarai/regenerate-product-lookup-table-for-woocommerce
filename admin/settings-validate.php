@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 function smnwcrpl_callback_validate_options( $input ) {
 
 	$select_options = [
-		'hourly'     => __( 'Hourly', 'smnwcrpl' ),
-		'twicedaily' => __( 'Twice Daily', 'smnwcrpl' ),
-		'daily'      => __( 'Daily', 'smnwcrpl' ),
-		'weekly'     => __( 'Weekly', 'smnwcrpl' ),
+		'hourly'     => __( 'Hourly', 'regenerate-product-lookup-table-for-woocommerce' ),
+		'twicedaily' => __( 'Twice Daily', 'regenerate-product-lookup-table-for-woocommerce' ),
+		'daily'      => __( 'Daily', 'regenerate-product-lookup-table-for-woocommerce' ),
+		'weekly'     => __( 'Weekly', 'regenerate-product-lookup-table-for-woocommerce' ),
 	];
 
 	if ( ! isset( $input['cron_schedule_time'] ) ) {
