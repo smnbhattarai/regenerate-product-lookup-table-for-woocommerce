@@ -3,10 +3,10 @@ Contributors: metalfreek
 Donate link: https://www.buymeacoffee.com/smnbhattarai/
 Tags: woo, woocommerce
 Requires at least: 5.3
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,10 @@ By default, plugin adds cron twice a day. If it's not working for you change the
 1. Regenerate product lookup table for WooCommerce plugin option
 
 == Changelog ==
+
+= 1.0.6 =
+* Added attribute lookup table regeneration action
+* Compatibility check for WordPress and Woocommerce
 
 = 1.0.5 =
 * Compatibility check for WordPress and Woocommerce
