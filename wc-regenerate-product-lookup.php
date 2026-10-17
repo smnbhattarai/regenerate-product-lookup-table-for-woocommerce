@@ -85,13 +85,26 @@ function smnwcrpl_auto_regenerate_woocommerce_product_lookup_table() {
 	/*
 	 * Regenerate attribute lookup table
 	 */
-	if ( class_exists( '\Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore' ) ) {
-		$container  = wc_get_container();
-		$data_store = $container->get( \Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore::class );
+	if ( function_exists( 'wc_get_container' )
+		&& class_exists( '\Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore' )
+		&& class_exists( '\Automattic\WooCommerce\Internal\ProductAttributesLookup\DataRegenerator' ) ) {
+		$container   = wc_get_container();
+		$data_store  = $container->get( \Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore::class );
+		$regenerator = $container->get( \Automattic\WooCommerce\Internal\ProductAttributesLookup\DataRegenerator::class );
 
-		// This triggers the regeneration job (often pushed to Action Scheduler for large stores)
-		if ( method_exists( $data_store, 'regenerate_lookup_table_data' ) ) {
-			$data_store->regenerate_lookup_table_data();
+		// Only regenerate when the table exists, usage enabled and no regeneration is running.
+		if ( $data_store->check_lookup_table_exists()
+			&& 'yes' === get_option( 'woocommerce_attribute_lookup_enabled' )
+			&& ! $data_store->regeneration_is_in_progress() ) {
+			try {
+				// Truncates the table and continues regeneration in the background via Action Scheduler
+				$regenerator->initiate_regeneration();
+			} catch ( \Exception $e ) {
+				wc_get_logger()->error(
+					'Attribute lookup table regeneration failed: ' . $e->getMessage(),
+					[ 'source' => 'regenerate-product-lookup-table-for-woocommerce' ]
+				);
+			}
 		}
 	}
 }
