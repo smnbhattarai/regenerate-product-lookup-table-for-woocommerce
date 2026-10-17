@@ -3,7 +3,7 @@ Contributors: metalfreek
 Donate link: https://www.buymeacoffee.com/smnbhattarai/
 Tags: woo, woocommerce
 Requires at least: 7.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
 Stable tag: 1.0.7

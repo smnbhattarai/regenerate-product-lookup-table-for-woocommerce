@@ -17,8 +17,10 @@ function smnwcrpl_format_status_time( $timestamp ) {
 	$date = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp );
 
 	if ( $timestamp > time() ) {
+		/* translators: %s: Human readable time span */
 		$relative = sprintf( __( 'in %s', 'regenerate-product-lookup-table-for-woocommerce' ), human_time_diff( $timestamp ) );
 	} else {
+		/* translators: %s: Human readable time span */
 		$relative = sprintf( __( '%s ago', 'regenerate-product-lookup-table-for-woocommerce' ), human_time_diff( $timestamp ) );
 	}
 
