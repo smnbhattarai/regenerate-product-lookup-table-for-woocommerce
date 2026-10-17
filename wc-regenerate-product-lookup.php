@@ -12,7 +12,7 @@
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
  * Version:           1.0.6
- * Requires at least: 5.3
+ * Requires at least: 5.4
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
  * Author:            Suman Bhattarai
@@ -67,6 +67,28 @@ function smnwcrpl_register_cron_when_plugin_is_activated() {
 }
 
 add_action( 'smnwcrpl_regenerate_product_lookup_table', 'smnwcrpl_auto_regenerate_woocommerce_product_lookup_table' );
+
+
+/**
+ * Restore the cron if it is missing or does not match the saved schedule
+ */
+function smnwcrpl_ensure_cron_is_scheduled() {
+	$options            = get_option( 'smnwcrpl_options', smnwcrpl_options_default() );
+	$cron_schedule_time = isset( $options['cron_schedule_time'] ) ? $options['cron_schedule_time'] : '';
+
+	if ( ! array_key_exists( $cron_schedule_time, wp_get_schedules() ) ) {
+		$cron_schedule_time = smnwcrpl_options_default()['cron_schedule_time'];
+	}
+
+	if ( wp_get_schedule( 'smnwcrpl_regenerate_product_lookup_table' ) === $cron_schedule_time ) {
+		return;
+	}
+
+	wp_clear_scheduled_hook( 'smnwcrpl_regenerate_product_lookup_table' );
+	wp_schedule_event( time(), $cron_schedule_time, 'smnwcrpl_regenerate_product_lookup_table' );
+}
+
+add_action( 'admin_init', 'smnwcrpl_ensure_cron_is_scheduled' );
 
 
 /**
