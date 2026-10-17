@@ -16,6 +16,33 @@ function smnwcrpl_callback_section_admin() {
 
 
 /**
+ * Register additional tasks section
+ */
+function smnwcrpl_callback_section_tasks() {
+	echo '<p>' . esc_html__( 'Optional tasks that run together with each lookup table regeneration.',
+			'regenerate-product-lookup-table-for-woocommerce' ) . '</p>';
+}
+
+
+/**
+ * Generate checkbox field in admin
+ *
+ * @param $args
+ */
+function smnwcrpl_callback_field_checkbox( $args ) {
+	$options = smnwcrpl_get_options();
+
+	$id    = isset( $args['id'] ) ? $args['id'] : '';
+	$label = isset( $args['label'] ) ? $args['label'] : '';
+
+	$checked = isset( $options[ $id ] ) && 'yes' === $options[ $id ];
+
+	echo '<input type="checkbox" id="smnwcrpl_options_' . esc_attr( $id ) . '" name="smnwcrpl_options[' . esc_attr( $id ) . ']" value="yes"' . checked( $checked, true, false ) . '> ';
+	echo '<label for="smnwcrpl_options_' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+}
+
+
+/**
  * Generate select field in admin
  *
  * @param $args

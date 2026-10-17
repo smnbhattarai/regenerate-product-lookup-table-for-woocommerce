@@ -11,7 +11,7 @@
  * Plugin Name:       Regenerate product lookup table for WooCommerce
  * Plugin URI:        http://sumanbhattarai.com.np/woocommerce-auto-regenerate-product-lookup-table/
  * Description:       This plugin auto regenerates Woocommerce product lookup table.
- * Version:           1.0.6
+ * Version:           1.0.7
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -39,6 +39,7 @@ if ( is_admin() ) {
 	require_once plugin_dir_path( __FILE__ ) . 'admin/settings-register.php';
 	require_once plugin_dir_path( __FILE__ ) . 'admin/settings-validate.php';
 	require_once plugin_dir_path( __FILE__ ) . 'admin/settings-postsave.php';
+	require_once plugin_dir_path( __FILE__ ) . 'admin/settings-status.php';
 }
 
 
@@ -48,8 +49,19 @@ if ( is_admin() ) {
  */
 function smnwcrpl_options_default() {
 	return [
-		'cron_schedule_time' => 'twicedaily',
+		'cron_schedule_time'   => 'twicedaily',
+		'sync_variable_prices' => 'no',
+		'recount_terms'        => 'no',
 	];
+}
+
+
+/**
+ * Get saved options merged with defaults
+ * @return string[]
+ */
+function smnwcrpl_get_options() {
+	return wp_parse_args( (array) get_option( 'smnwcrpl_options', [] ), smnwcrpl_options_default() );
 }
 
 
@@ -63,7 +75,7 @@ function smnwcrpl_register_cron_when_plugin_is_activated() {
 	}
 
 	// Add default schedule option
-	add_option( 'smnwcrpl_options', [ 'cron_schedule_time' => 'twicedaily' ] );
+	add_option( 'smnwcrpl_options', smnwcrpl_options_default() );
 }
 
 add_action( 'smnwcrpl_regenerate_product_lookup_table', 'smnwcrpl_auto_regenerate_woocommerce_product_lookup_table' );
@@ -129,7 +141,78 @@ function smnwcrpl_auto_regenerate_woocommerce_product_lookup_table() {
 			}
 		}
 	}
+
+	$options = smnwcrpl_get_options();
+
+	/*
+	 * Sync variable product prices
+	 */
+	if ( 'yes' === $options['sync_variable_prices'] ) {
+		smnwcrpl_start_variable_price_sync();
+	}
+
+	/*
+	 * Recount product category, tag and brand counts
+	 */
+	if ( 'yes' === $options['recount_terms'] && function_exists( 'wc_recount_all_terms' ) ) {
+		wc_recount_all_terms();
+	}
+
+	// Store last run time for the status panel
+	update_option( 'smnwcrpl_last_run', time(), false );
 }
+
+
+/**
+ * Check if a variable product price sync is queued
+ * @return bool
+ */
+function smnwcrpl_variable_price_sync_is_running() {
+	return function_exists( 'WC' ) && null !== WC()->queue()->get_next( 'smnwcrpl_sync_variable_prices_batch', null, 'smnwcrpl' );
+}
+
+
+/**
+ * Queue the first batch of variable product price sync
+ */
+function smnwcrpl_start_variable_price_sync() {
+	if ( ! function_exists( 'WC' ) || smnwcrpl_variable_price_sync_is_running() ) {
+		return;
+	}
+
+	WC()->queue()->add( 'smnwcrpl_sync_variable_prices_batch', [ 'page' => 1 ], 'smnwcrpl' );
+}
+
+
+/**
+ * Sync price range and stock status of one batch of variable products from their variations
+ *
+ * @param int $page
+ */
+function smnwcrpl_sync_variable_prices_batch( $page ) {
+	$page       = max( 1, (int) $page );
+	$batch_size = 50;
+
+	$product_ids = wc_get_products( [
+		'type'    => 'variable',
+		'limit'   => $batch_size,
+		'page'    => $page,
+		'orderby' => 'ID',
+		'order'   => 'ASC',
+		'return'  => 'ids',
+	] );
+
+	// Queue the next batch first so the chain continues even if this one fails
+	if ( count( $product_ids ) === $batch_size ) {
+		WC()->queue()->add( 'smnwcrpl_sync_variable_prices_batch', [ 'page' => $page + 1 ], 'smnwcrpl' );
+	}
+
+	foreach ( $product_ids as $product_id ) {
+		WC_Product_Variable::sync( $product_id );
+	}
+}
+
+add_action( 'smnwcrpl_sync_variable_prices_batch', 'smnwcrpl_sync_variable_prices_batch' );
 
 
 /**
@@ -155,6 +238,18 @@ register_deactivation_hook( __FILE__, 'smnwcrpl_product_lookup_table_cron_deacti
 function smnwcrpl_product_lookup_table_cron_deactivate() {
 	wp_clear_scheduled_hook( 'smnwcrpl_regenerate_product_lookup_table' );
 }
+
+
+/**
+ * Cancel queued variable product price sync batches on deactivation
+ */
+function smnwcrpl_cancel_queued_batches() {
+	if ( function_exists( 'WC' ) ) {
+		WC()->queue()->cancel_all( 'smnwcrpl_sync_variable_prices_batch' );
+	}
+}
+
+register_deactivation_hook( __FILE__, 'smnwcrpl_cancel_queued_batches' );
 
 /**
  * Add settings link to plugin actions

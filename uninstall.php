@@ -12,3 +12,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 delete_option( 'smnwcrpl_options' );
+delete_option( 'smnwcrpl_last_run' );

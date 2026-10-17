@@ -9,6 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 function smnwcrpl_option_post_save( $old_value, $new_value ) {
 
 	$cron_schedule_time = isset( $new_value['cron_schedule_time'] ) ? sanitize_text_field( $new_value['cron_schedule_time'] ) : '';
+	$old_schedule_time  = isset( $old_value['cron_schedule_time'] ) ? $old_value['cron_schedule_time'] : '';
+
+	// Only reschedule when the recurrence changed, not when other options are saved
+	if ( $old_schedule_time === $cron_schedule_time ) {
+		return;
+	}
 
 	// Keep the existing cron if the new recurrence is not a registered schedule
 	if ( ! array_key_exists( $cron_schedule_time, wp_get_schedules() ) ) {

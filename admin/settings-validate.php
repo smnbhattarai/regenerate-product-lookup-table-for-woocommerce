@@ -37,6 +37,13 @@ function smnwcrpl_callback_validate_options( $input ) {
 			__( 'Invalid cron time selected. The previous value has been kept.', 'regenerate-product-lookup-table-for-woocommerce' ) );
 	}
 
-	return $input;
+	$output = [ 'cron_schedule_time' => $input['cron_schedule_time'] ];
+
+	// Unchecked checkboxes are not submitted
+	foreach ( [ 'sync_variable_prices', 'recount_terms' ] as $checkbox ) {
+		$output[ $checkbox ] = empty( $input[ $checkbox ] ) ? 'no' : 'yes';
+	}
+
+	return $output;
 
 }

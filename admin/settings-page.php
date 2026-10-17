@@ -30,6 +30,8 @@ function smnwcrpl_display_settings_page() {
 
         </form>
 
+		<?php smnwcrpl_display_status_section(); ?>
+
     </div>
 
 	<?php
