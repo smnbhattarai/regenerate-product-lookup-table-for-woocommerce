@@ -8,8 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function smnwcrpl_option_post_save( $old_value, $new_value ) {
 
-	$options            = get_option( 'smnwcrpl_options', smnwcrpl_options_default() );
-	$cron_schedule_time = sanitize_text_field( $options['cron_schedule_time'] );
+	$cron_schedule_time = isset( $new_value['cron_schedule_time'] ) ? sanitize_text_field( $new_value['cron_schedule_time'] ) : '';
+
+	// Keep the existing cron if the new recurrence is not a registered schedule
+	if ( ! array_key_exists( $cron_schedule_time, wp_get_schedules() ) ) {
+		return;
+	}
 
 	smnwcrpl_product_lookup_table_cron_deactivate();
 

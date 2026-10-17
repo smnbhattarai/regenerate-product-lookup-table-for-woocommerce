@@ -20,12 +20,21 @@ function smnwcrpl_callback_validate_options( $input ) {
 		'weekly'     => __( 'Weekly', 'regenerate-product-lookup-table-for-woocommerce' ),
 	];
 
-	if ( ! isset( $input['cron_schedule_time'] ) ) {
-		$input['cron_schedule_time'] = null;
+	if ( ! is_array( $input ) ) {
+		$input = [];
 	}
 
-	if ( ! array_key_exists( $input['cron_schedule_time'], $select_options ) ) {
-		$input['cron_schedule_time'] = null;
+	// Fall back to the saved value (or the default) so an invalid submission never clears the schedule
+	if ( ! isset( $input['cron_schedule_time'] ) || ! array_key_exists( $input['cron_schedule_time'], $select_options ) ) {
+		$options  = get_option( 'smnwcrpl_options', smnwcrpl_options_default() );
+		$previous = isset( $options['cron_schedule_time'] ) ? $options['cron_schedule_time'] : null;
+
+		$input['cron_schedule_time'] = array_key_exists( $previous, $select_options )
+			? $previous
+			: smnwcrpl_options_default()['cron_schedule_time'];
+
+		add_settings_error( 'smnwcrpl_options', 'smnwcrpl_invalid_schedule',
+			__( 'Invalid cron time selected. The previous value has been kept.', 'regenerate-product-lookup-table-for-woocommerce' ) );
 	}
 
 	return $input;
