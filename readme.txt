@@ -2,7 +2,7 @@
 Contributors: metalfreek
 Donate link: https://www.buymeacoffee.com/smnbhattarai/
 Tags: woo, woocommerce
-Requires at least: 5.4
+Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
@@ -15,11 +15,11 @@ not working as expected.
 
 == Description ==
 
-If you are using Woocommerce for you store and having trouble with sorting function in products page of Woocommerce, this plugin might help. This sort issue is seen especially when there is automated script pulling in products to the store or when using external price sync tool. This plugin adds cron to regenerate product lookup table which Woocommerce users to quickly sort your products.
+If you are using WooCommerce for your store and having trouble with sorting function in products page of Woocommerce, this plugin might help. This sort issue is seen especially when there is automated script pulling in products to the store or when using external price sync tool. This plugin adds cron to regenerate product lookup table which WooCommerce uses to quickly sort your products.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/wc-regenerate-product-lookup` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/regenerate-product-lookup-table-for-woocommerce` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Go to **Settings->Woocommerce regenerate product lookup table** page to configure the plugin
 
